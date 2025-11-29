@@ -11,12 +11,12 @@ class LandingProgramController extends Controller
     public function index()
     {
         $programs = LandingProgram::orderBy('position')->get();
-        return view('admin.landing.program.index', compact('programs'));
+        return view('admin.landing.programs.index', compact('programs'));
     }
 
     public function create()
     {
-        return view('admin.landing.program.create');
+        return view('admin.landing.programs.create');
     }
 
     public function store(Request $request)
@@ -41,7 +41,7 @@ class LandingProgramController extends Controller
     public function edit($id)
     {
         $program = LandingProgram::findOrFail($id);
-        return view('admin.landing.program.edit', compact('program'));
+        return view('admin.landing.programs.edit', compact('program'));
     }
 
     public function update(Request $request, $id)

@@ -76,14 +76,11 @@ Route::middleware(['auth'])->prefix('ekyc')->group(function () {
     Route::get('step1', [EkycController::class, 'step1'])->name('ekyc.step1');
     Route::post('step1', [EkycController::class, 'storeStep1'])->name('ekyc.storeStep1');
 
-    Route::get('step2', function () {
-        return "Step 2: Upload Dokumen (belum dibuat)";
-    })->name('ekyc.step2');
-    Route::get('/ekyc/step2', [EkycController::class, 'step2'])->name('ekyc.step2');
-    Route::post('/ekyc/step2', [EkycController::class, 'storeStep2'])->name('ekyc.step2.store');
+    Route::get('step2', [EkycController::class, 'step2'])->name('ekyc.step2');
+    Route::post('step2', [EkycController::class, 'storeStep2'])->name('ekyc.step2.store');
 
-    Route::get('/ekyc/step3', [EkycController::class, 'showStep3'])->name('ekyc.step3');
-    Route::post('/ekyc/step3', [EkycController::class, 'storeStep3'])->name('ekyc.step3.store');
+    Route::get('step3', [EkycController::class, 'showStep3'])->name('ekyc.step3');
+    Route::post('step3', [EkycController::class, 'storeStep3'])->name('ekyc.step3.store');
 
     // Step 4 – Alamat Domisili & Referensi Sumber
     Route::get('/ekyc/step4', [EkycController::class, 'showStep4'])->name('ekyc.step4');

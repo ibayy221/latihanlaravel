@@ -16,10 +16,9 @@
             <h1 class="text-2xl font-bold text-blue-600">LP3I</h1>
             <!-- konten : navbar  -->
             <nav class="hidden md:flex gap-8 text-gray-700 font-medium">
-                <a href="#beranda" class="hover:text-blue-600">Beranda</a>
-                <a href="#program" class="hover:text-blue-600">Program</a>
-                <a href="#tentang" class="hover:text-blue-600">Tentang</a>
-                <a href="#kontak" class="hover:text-blue-600">Kontak</a>
+                @foreach ($navigation as $nav)
+                    <a href="{{ $nav->url }}" class="hover:text-blue-600">{{ $nav->label }}</a>
+                @endforeach
             </nav>
 
             <div class="flex gap-3">
@@ -64,7 +63,7 @@
             <!-- konten : banner wording  -->
             <div>
                 <h2 class="text-4xl md:text-5xl font-extrabold leading-tight text-gray-900 mb-6">
-                    {{ $landing['hero_title'] ?? 'Kampus Vokasi Terbaik<br />Untuk Masa Depan Karier Anda 99' }}
+                    {{ $landing['hero_title'] ?? 'Kampus Vokasi Terbaik Untuk Masa Depan Karier Anda 99' }}
                 </h2>
                 <p class="text-lg text-gray-600 mb-8">
                     {!! $landing['hero_subtitle'] ?? 'Solusi Pendidikan Masa Depan' !!}
@@ -85,8 +84,36 @@
             <!-- Image -->
             <div class="flex justify-center">
                 <!-- konten : banner image -->
-                <img src="{{ asset('uploads/' . ($landing['hero_image'] ?? 'default-hero.png')) }}" alt="Mahasiswa LP3I" class="w-full max-w-2xl object-cover object-cover rounded-xl shadow-lg" />
+                @php
+                    $heroSetting = $landing['hero_image'] ?? null;
+                    $heroUrl = null;
+                    
+                    if ($heroSetting) {
+                        // Try storage path first
+                        if (file_exists(public_path('storage/' . $heroSetting))) {
+                            $heroUrl = asset('storage/' . $heroSetting);
+                        }
+                        // Fallback to uploads path
+                        elseif (file_exists(public_path('uploads/' . $heroSetting))) {
+                            $heroUrl = asset('uploads/' . $heroSetting);
+                        }
+                        // If just filename, try uploads/landing
+                        elseif (file_exists(public_path('uploads/landing/' . $heroSetting))) {
+                            $heroUrl = asset('uploads/landing/' . $heroSetting);
+                        }
+                    }
+                    
+                    // fallback to known file in repo
+                    if (!$heroUrl && file_exists(public_path('uploads/landing/hero-lp3i.jpg'))) {
+                        $heroUrl = asset('uploads/landing/hero-lp3i.jpg');
+                    }
+                    
+                    if (! $heroUrl) {
+                        $heroUrl = asset('uploads/default-hero.png');
+                    }
+                @endphp
 
+                <img src="{{ $heroUrl }}" alt="Mahasiswa LP3I" class="w-full max-w-2xl object-cover object-cover rounded-xl shadow-lg" />
 
             </div>
         </div>
@@ -126,7 +153,7 @@
                 </p>
             </div>
             <div>
-                <img src="{{ asset('storage/image/landing/mahasiswa-lp3i.png') }}" class="rounded-xl shadow-lg"/>
+                <img src="{{ asset('uploads/landing/mahasiswa-lp3i.png') }}" alt="Mahasiswa LP3I" class="rounded-xl shadow-lg"/>
             </div>
         </div>
     </section>
